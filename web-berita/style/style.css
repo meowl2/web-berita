@@ -16,7 +16,7 @@ Warning Amber,#F4A261,"Call to Action: A warm copper/orange to provide high-cont
 }
 
 * {
-  /* border: 1px solid red; */
+  /* outline: 1px solid red; */
 }
 
 body {
@@ -29,6 +29,7 @@ body {
     Arial,
     sans-serif;
   margin: 0;
+  color: var(--text-color);
   /* line-height: 1.6; */
   background-color: var(--background);
 }
@@ -52,7 +53,7 @@ nav {
   align-items: center;
   background-color: var(--secondary-background);
   color: var(--text-color);
-  padding: 0.25rem 2%;
+  padding: 0.5rem 2%;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -84,10 +85,18 @@ nav ul li a:hover {
   color: #ff9900;
 }
 
+/* .login_page {
+  background: black;
+  width: 100%;
+  height: 30px;
+} */
+
+/* main */
+
 .hero {
   height: 80vh;
   background:
-    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+  linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
     no-repeat center center/cover;
   display: flex;
   flex-direction: column;
@@ -103,34 +112,34 @@ nav ul li a:hover {
 }
 
 .container {
-  padding: 2rem 2%;
+  padding: 2rem 3%;
 }
 
-.berita {
+.berita_sect_1 {
   display: grid;
   grid-template-columns: 1fr 1.5fr 1fr;
   color: var(--text-color);
   position: relative;
 }
 
-.berita div {
+.berita_sect_1 div {
   padding: 0 0.5rem;
   position: relative;
   padding-bottom: 0.5rem;
 }
 
-.berita h2,
-.berita p {
+.berita_sect_1 h2,
+.berita_sect_1 p {
   padding: 0 0.5rem;
 }
 
-.berita img {
+.berita_sect_1 img {
   display: block;
   width: 100%;
   height: 180px;
   object-fit: cover;
   object-position: center;
-  margin-bottom: 0.25rem;
+  margin-top: 1rem;
 }
 
 .trending img {
@@ -141,14 +150,32 @@ nav ul li a:hover {
   text-align: center;
 }
 
-.berita > div > div img,
-.berita > div > div h2 {
+.berita_sect_1 > div > div img,
+.berita_sect_1 > div > div h2 {
   transition: opacity 0.3s;
 }
 
-.berita > div > div:hover img,
-.berita > div > div:hover h2 {
+.berita_sect_1:hover {
+  cursor: pointer;
+}
+
+.berita_sect_1 > div > div:hover h2 {
+  text-decoration: underline;
+}
+
+.trending:hover img {
   opacity: 0.7;
+}
+
+.trending:hover h2 {
+  text-decoration: underline;
+}
+
+.berita_sect_1 > div > div:hover img {
+  opacity: 0.7;
+}
+
+.berita_sect_1 > div > div:hover h2 {
   text-decoration: underline;
 }
 
@@ -166,25 +193,194 @@ nav ul li a:hover {
   content: "";
   position: absolute;
   bottom: 0;
-  left: 2rem;
-  right: 2rem;
-  height: 0.5px;
-  background: var(--primary-accent);
-}
-
-.berita::after {
-  content: "";
-  position: absolute;
-  bottom: -4rem;
   left: 0;
   width: 100%;
   height: 0.5px;
   background: var(--primary-accent);
 }
 
-.services {
+.berita_sect_2 {
+    padding-top: 2rem;
+    min-height: 90vh; 
+    position: relative;  
+}
+
+.berita_sect_2::before {
+    content: "";
+    position: absolute;
+    top: 0;  
+    left: 2.5%;
+    width: 95%;
+    height: 0.5px;
+    background: var(--primary-accent);
+}
+
+.berita_sect_2 {
+  height: 90vh;
+}
+
+.berita_sect_2_main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   color: var(--text-color);
-  padding: 7rem 2%;
+  position: relative;
+}
+
+.berita_sect_2 div {
+  padding: 0 0.5rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.berita_sect_2 h2,
+.berita_sect_2 p {
+  padding: 0 0.5rem;
+}
+
+.berita_sect_2 img {
+  display: block;
+  width: 100%;
+  height: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.berita_sect_2 > div > div:hover img {
+  opacity: 0.7;
+}
+
+.berita_sect_2 > div > div:hover h2 {
+  text-decoration: underline;
+}
+
+.berita_sect_2 {
+  padding-top: 2rem;
+}
+
+.berita_sect_2 {
+    padding-top: 2rem;
+    min-height: 90vh; 
+    position: relative; 
+}
+
+.berita_sect_2::before {
+    content: "";
+    position: absolute;
+    top: 0;                 
+    left: 2.5%;
+    width: 95%;
+    height: 0.5px;
+    background: var(--primary-accent);
+}
+
+.berita_sect_3 {
+    position: relative;
+    padding-top: 2rem;
+    margin-top: 2rem;     
+}
+
+.berita_sect_3::before {
+    content: "";
+    position: absolute;
+    top: 0;                 
+    left: 2.5%;
+    width: 95%;
+    height: 0.5px;
+    background: var(--primary-accent);
+}
+
+.sect3_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+
+.sect3_nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sect3_nav button {
+  background: var(--secondary-background);
+  color: var(--text-color);
+  border: 1px solid var(--primary-accent);
+  padding: 0.25rem 0.75rem;
+  cursor: pointer;
+  transition: var(--background) 0.3s;
+}
+
+.sect3_nav button:hover {
+  background: var(--primary-accent);
+  color: var(--background);
+}
+
+.sect3_nav span {
+  color: var(--text-color);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.berita_sect_3 img {
+  display: block;
+  width: 100%;
+  height: 180px; 
+  object-fit: cover;
+  object-position: center;
+}
+
+.sect3_wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+.sect3_wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+.berita_sect_3_main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    color: var(--text-color);
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.berita_sect_3_main.slide-out-left {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+.berita_sect_3_main.slide-out-right {
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+.berita_sect_3_main.slide-in-left {
+    transform: translateX(-30px);
+    opacity: 0;
+}
+
+.berita_sect_3_main.slide-in-right {
+    transform: translateX(30px);
+    opacity: 0;
+}
+
+.berita_sect_3_main.slide-in-left.active,
+.berita_sect_3_main.slide-in-right.active {
+    transform: translateX(0);
+    opacity: 1;
+}
+.berita_sect_3_main div {
+  padding: 0 0.25rem;
+}
+
+.services {
+  color: var(--cta);
+  padding: 1rem 2%;
 }
 
 footer {
