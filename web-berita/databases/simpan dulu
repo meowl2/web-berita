@@ -1,0 +1,28 @@
+-- 1. Tabel untuk User (Fitur Login & Register)
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'user') DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Tabel untuk Kategori Berita
+CREATE TABLE categories (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL
+);
+
+-- 3. Tabel untuk Berita (Konten Utama)
+CREATE TABLE news (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    category_id INT,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    image VARCHAR(255), -- Menyimpan nama file gambar (contoh: iran.jfif)
+    is_trending BOOLEAN DEFAULT FALSE,
+    is_viral BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+);
