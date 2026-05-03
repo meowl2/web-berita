@@ -15,7 +15,7 @@
       <p>Masuk ke akun Anda untuk melanjutkan</p>
     </div>
 
-    <form class="login-form" id="loginForm">
+    <form method="POST" action="login.php">
       <div class="form-group">
         <label for="email">Email</label>
         <div class="input-with-icon">
@@ -69,11 +69,11 @@
         <div id="nameError" class="error-message">Nama harus diisi</div>
 
         <label for="regEmail">Email</label>
-        <input type="email" id="regEmail" placeholder="Masukkan email" required />
+        <input type="email" name="Admin" required>
         <div id="regEmailError" class="error-message">Email tidak valid</div>
 
         <label for="regPassword">Password</label>
-        <input type="password" id="regPassword" placeholder="Masukkan password" required />
+        <input type="password" name="123456" required>
         <div id="regPasswordError" class="error-message">Password minimal 6 karakter</div>
 
         <button type="submit">Daftar</button>
