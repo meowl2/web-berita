@@ -1,11 +1,3 @@
-// ─── Constants ───────────────────────────────────────────────────────────────
-const STORAGE_KEY = "bitmedia_viral_news";
-const ITEMS_PER_PAGE = 4;
-
-// ─── State ────────────────────────────────────────────────────────────────────
-let currentPage = 0;
-
-// ─── Storage ─────────────────────────────────────────────────────────────────
 import {
   getAllNews,
   insertNews,
@@ -13,70 +5,40 @@ import {
   uploadImage,
 } from "./supabase.js";
 
-// Form submit — upload image first, then save to DB
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const title = document.getElementById("news_title").value.trim();
-  const desc = document.getElementById("news_desc").value.trim();
-  const content = document.getElementById("news_content").value.trim();
-  const file = imageInput.files[0];
-
-  if (!title || !desc || !content || !file)
-    return alert("Lengkapi semua field.");
-
-  try {
-    const image_url = await uploadImage(file); // → Supabase Storage
-    await insertNews({ title, desc, content, image_url, section: "viral" });
-    currentPage = 0;
-    await renderSect3();
-    closeModal();
-  } catch (err) {
-    alert("Gagal menyimpan: " + err.message);
-  }
-});
-
-// Delete
-async function deleteNews(id) {
-  await deleteNewsById(id);
-  renderSect3();
-}
-
-// Render sect_3
-async function renderSect3() {
-  const news = await getAllNews();
-  const viral = news.filter((n) => n.section === "viral");
-  // ... rest of your render logic, same as before
-}
+// ─── Constants ───────────────────────────────────────────────────────────────
+const ITEMS_PER_PAGE = 4;
+let currentPage = 0;
 
 // ─── Rendering ───────────────────────────────────────────────────────────────
 function totalPages(news) {
   return Math.max(1, Math.ceil(news.length / ITEMS_PER_PAGE));
 }
 
-function renderSect3() {
-  const news = getNews();
+async function renderSect3() {
+  const news = await getAllNews();
+  const viral = news.filter((n) => n.section === "viral");
+
   const wrapper = document.getElementById("sect3_dynamic_wrapper");
   const indicator = document.getElementById("sect3_indicator");
-  const pages = totalPages(news);
+  const pages = totalPages(viral);
 
-  // Clamp current page
   if (currentPage >= pages) currentPage = pages - 1;
   if (currentPage < 0) currentPage = 0;
 
   indicator.textContent = `${currentPage + 1} / ${pages}`;
 
-  const start = currentPage * ITEMS_PER_PAGE;
-  const slice = news.slice(start, start + ITEMS_PER_PAGE);
-
   wrapper.innerHTML = "";
 
-  if (news.length === 0) {
+  if (viral.length === 0) {
     wrapper.innerHTML = `
       <div class="sect3_empty">
         <p>Belum ada berita. Tambahkan berita pertama!</p>
       </div>`;
     return;
   }
+
+  const start = currentPage * ITEMS_PER_PAGE;
+  const slice = viral.slice(start, start + ITEMS_PER_PAGE);
 
   const grid = document.createElement("div");
   grid.className = "berita_sect_3_main";
@@ -87,7 +49,7 @@ function renderSect3() {
     card.innerHTML = `
       <a class="sect3_card_link" href="news-detail.html?id=${item.id}">
         <div class="sect3_img_wrap">
-          <img src="${item.image}" alt="${item.title}" />
+          <img src="${item.image_url}" alt="${item.title}" />
         </div>
         <h2>${item.title}</h2>
         <p>${item.desc}</p>
@@ -99,35 +61,36 @@ function renderSect3() {
 
   wrapper.appendChild(grid);
 
-  // Animate in
   requestAnimationFrame(() => {
     grid.classList.add("slide-in-active");
   });
 
-  // Bind delete buttons
   wrapper.querySelectorAll(".sect3_delete_btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
+    btn.addEventListener("click", async (e) => {
       e.stopPropagation();
       const id = Number(btn.dataset.id);
-      if (confirm("Hapus berita ini?")) deleteNews(id);
+      if (confirm("Hapus berita ini?")) {
+        await deleteNewsById(id);
+        renderSect3();
+      }
     });
   });
 }
 
 // ─── Pagination ───────────────────────────────────────────────────────────────
-document.getElementById("prev_sect3").addEventListener("click", () => {
-  const news = getNews();
+document.getElementById("prev_sect3").addEventListener("click", async () => {
   if (currentPage > 0) {
     currentPage--;
-    renderSect3();
+    await renderSect3();
   }
 });
 
-document.getElementById("next_sect3").addEventListener("click", () => {
-  const news = getNews();
-  if (currentPage < totalPages(news) - 1) {
+document.getElementById("next_sect3").addEventListener("click", async () => {
+  const news = await getAllNews();
+  const viral = news.filter((n) => n.section === "viral");
+  if (currentPage < totalPages(viral) - 1) {
     currentPage++;
-    renderSect3();
+    await renderSect3();
   }
 });
 
@@ -158,17 +121,14 @@ modal.addEventListener("click", (e) => {
   if (e.target === modal) closeModal();
 });
 
-// Image preview
 imageInput.addEventListener("change", () => {
   const file = imageInput.files[0];
   if (!file) return;
-
   if (file.size > 5 * 1024 * 1024) {
     alert("Ukuran gambar maksimal 5MB.");
     imageInput.value = "";
     return;
   }
-
   const reader = new FileReader();
   reader.onload = (e) => {
     imagePreview.src = e.target.result;
@@ -177,28 +137,25 @@ imageInput.addEventListener("change", () => {
   reader.readAsDataURL(file);
 });
 
-// Form submit
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
-
   const title = document.getElementById("news_title").value.trim();
   const desc = document.getElementById("news_desc").value.trim();
   const content = document.getElementById("news_content").value.trim();
   const file = imageInput.files[0];
 
-  if (!title || !desc || !content || !file) {
-    alert("Mohon lengkapi semua field.");
-    return;
-  }
+  if (!title || !desc || !content || !file)
+    return alert("Mohon lengkapi semua field.");
 
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    addNews({ title, desc, content, image: ev.target.result });
+  try {
+    const image_url = await uploadImage(file);
+    await insertNews({ title, desc, content, image_url, section: "viral" });
     currentPage = 0;
-    renderSect3();
+    await renderSect3();
     closeModal();
-  };
-  reader.readAsDataURL(file);
+  } catch (err) {
+    alert("Gagal menyimpan: " + err.message);
+  }
 });
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
