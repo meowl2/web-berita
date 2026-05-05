@@ -6,28 +6,46 @@ const ITEMS_PER_PAGE = 4;
 let currentPage = 0;
 
 // ─── Storage ─────────────────────────────────────────────────────────────────
-function getNews() {
+import {
+  getAllNews,
+  insertNews,
+  deleteNewsById,
+  uploadImage,
+} from "./supabase.js";
+
+// Form submit — upload image first, then save to DB
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const title = document.getElementById("news_title").value.trim();
+  const desc = document.getElementById("news_desc").value.trim();
+  const content = document.getElementById("news_content").value.trim();
+  const file = imageInput.files[0];
+
+  if (!title || !desc || !content || !file)
+    return alert("Lengkapi semua field.");
+
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  } catch {
-    return [];
+    const image_url = await uploadImage(file); // → Supabase Storage
+    await insertNews({ title, desc, content, image_url, section: "viral" });
+    currentPage = 0;
+    await renderSect3();
+    closeModal();
+  } catch (err) {
+    alert("Gagal menyimpan: " + err.message);
   }
-}
+});
 
-function saveNews(news) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(news));
-}
-
-function addNews(item) {
-  const news = getNews();
-  news.unshift({ ...item, id: Date.now() }); // newest first
-  saveNews(news);
-}
-
-function deleteNews(id) {
-  const news = getNews().filter((n) => n.id !== id);
-  saveNews(news);
+// Delete
+async function deleteNews(id) {
+  await deleteNewsById(id);
   renderSect3();
+}
+
+// Render sect_3
+async function renderSect3() {
+  const news = await getAllNews();
+  const viral = news.filter((n) => n.section === "viral");
+  // ... rest of your render logic, same as before
 }
 
 // ─── Rendering ───────────────────────────────────────────────────────────────
