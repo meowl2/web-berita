@@ -11,6 +11,8 @@ function formatDate(dateStr) {
   });
 }
 
+
+
 function renderNotFound() {
   root.innerHTML = `
     <div class="detail_error">

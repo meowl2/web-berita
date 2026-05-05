@@ -1,5 +1,6 @@
 const SUPABASE_URL = "https://pilrbtpxprwiwlenklhh.supabase.co";
-const SUPABASE_KEY = "sb_publishable_18hr3rEpGRdkfByYhhOj3A_qqs7AUGd";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbHJidHB4cHJ3aXdsZW5rbGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5ODUzODksImV4cCI6MjA5MzU2MTM4OX0.oWHgsH8MWvk27Y3L4afdVu7JCsBoAcglDEZvbsVQ_s0";
 
 async function dbFetch(path, options = {}) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
