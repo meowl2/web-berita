@@ -39,7 +39,7 @@ async function render(item) {
         <div class="detail_tag">Viral</div>
         <h1 class="detail_title">${item.title}</h1>
         <p class="detail_meta">Diterbitkan pada ${formatDate(item.created_at)}</p>
-        <p class="detail_desc">${item.desc}</p>
+        <p class="detail_description">${item.description}</p>
       </header>
 
       <figure class="detail_figure">

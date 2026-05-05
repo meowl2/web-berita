@@ -44,7 +44,7 @@
   letter-spacing: 0.02em;
 }
 
-.detail_desc {
+.detail_description {
   font-size: 1.1rem;
   color: var(--text-color);
   border-left: 3px solid var(--primary-accent);
@@ -156,7 +156,7 @@
 }
 
 @media (max-width: 600px) {
-  .detail_desc {
+  .detail_description {
     font-size: 1rem;
   }
 }

@@ -52,7 +52,7 @@ async function renderSect3() {
           <img src="${item.image_url}" alt="${item.title}" />
         </div>
         <h2>${item.title}</h2>
-        <p>${item.desc}</p>
+        <p>${item.description}</p>
       </a>
       <button class="sect3_delete_btn" title="Hapus berita" data-id="${item.id}">✕</button>
     `;
@@ -140,16 +140,16 @@ imageInput.addEventListener("change", () => {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = document.getElementById("news_title").value.trim();
-  const desc = document.getElementById("news_desc").value.trim();
+  const description = document.getElementById("news_desc").value.trim();
   const content = document.getElementById("news_content").value.trim();
   const file = imageInput.files[0];
 
-  if (!title || !desc || !content || !file)
+  if (!title || !description || !content || !file)
     return alert("Mohon lengkapi semua field.");
 
   try {
     const image_url = await uploadImage(file);
-    await insertNews({ title, desc, content, image_url, section: "viral" });
+    await insertNews({ title, description, content, image_url, section: "viral" });
     currentPage = 0;
     await renderSect3();
     closeModal();

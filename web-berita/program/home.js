@@ -8,7 +8,7 @@ function renderCardHTML(item) {
     <a class="sect_card_link" href="news-detail.html?id=${item.id}">
       <img src="${item.image_url}" alt="${item.title}" />
       <h2>${item.title}</h2>
-      <p>${item.desc}</p>
+      <p>${item.description}</p>
     </a>
   `;
 }
