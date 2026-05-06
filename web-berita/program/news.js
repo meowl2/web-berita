@@ -149,7 +149,13 @@ form.addEventListener("submit", async (e) => {
 
   try {
     const image_url = await uploadImage(file);
-    await insertNews({ title, description, content, image_url, section: "viral" });
+    await insertNews({
+      title,
+      description: desc,
+      content,
+      image_url,
+      section: "viral",
+    });
     currentPage = 0;
     await renderSect3();
     closeModal();
