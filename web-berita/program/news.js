@@ -16,7 +16,7 @@ function totalPages(news) {
 
 async function renderSect3() {
   const news = await getAllNews();
-  const viral = news.filter((n) => n.section === "viral");
+  const featured = news.filter((n) => n.section === "featured");
 
   const wrapper = document.getElementById("sect3_dynamic_wrapper");
   const indicator = document.getElementById("sect3_indicator");
@@ -153,13 +153,7 @@ form.addEventListener("submit", async (e) => {
 
   try {
     const image_url = await uploadImage(file);
-    await insertNews({
-      title,
-      description: desc,
-      content,
-      image_url,
-      section: "viral",
-    });
+    await insertNews({title, description: desc, content, image_url, section: "featured",});
     currentPage = 0;
     await renderSect3();
     closeModal();
@@ -193,12 +187,12 @@ async function populateLandingPage() {
   const news = await getAllNews();
   if (news.length === 0) return;
 
-  const picked = pickRandom(news, 5);
+  const picked = pickRandom(news, 6);
 
   const sect1 = document.getElementById("sect1_dynamic");
   const sect2 = document.getElementById("sect2_dynamic");
 
-  if (sect1) sect1.innerHTML = `
+    if (sect1) sect1.innerHTML = `
     <div class="berita_1">
       ${picked[0] ? renderLandingCard(picked[0]) : ""}
       ${picked[1] ? renderLandingCard(picked[1]) : ""}
@@ -211,16 +205,16 @@ async function populateLandingPage() {
         <div>
           <h2>${picked[3].title}</h2>
           <p>${picked[3].description}</p>
-        </div>` : ""}
+        </div>` : "" }
       ${picked[4] ? `
         <div>
           <h2>${picked[4].title}</h2>
           <p>${picked[4].description}</p>
         </div>` : "" }
-      ${picked[0] ? `
+      ${ picked[5] ? `
         <div>
-          <h2>${picked[0].title}</h2>
-          <p>${picked[0].description}</p>
+          <h2>${picked[5].title}</h2>
+          <p>${picked[5].description}</p>
         </div>` : "" }
     </div>
   `;

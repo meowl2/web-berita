@@ -55,3 +55,4 @@ export async function uploadImage(file) {
   if (!res.ok) throw new Error(await res.text());
   return `${SUPABASE_URL}/storage/v1/object/public/news-images/${filename}`;
 }
+
