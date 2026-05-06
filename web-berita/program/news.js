@@ -5,43 +5,6 @@ import {
   uploadImage,
 } from "./supabase.js";
 
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const title = document.getElementById("news_title").value.trim();
-  const desc = document.getElementById("news_desc").value.trim();
-  const content = document.getElementById("news_content").value.trim();
-  const file = imageInput.files[0];
-
-  console.log("submit fired", { title, desc, content, file });
-
-  if (!title || !desc || !content || !file)
-    return alert("Mohon lengkapi semua field.");
-
-  try {
-    console.log("uploading image...");
-    const image_url = await uploadImage(file);
-    console.log("image uploaded", image_url);
-
-    console.log("inserting news...");
-    await insertNews({
-      title,
-      description: desc,
-      content,
-      image_url,
-      section: "viral",
-    });
-    console.log("news inserted");
-
-    currentPage = 0;
-    await renderSect3();
-    closeModal();
-  } catch (err) {
-    console.error("full error:", err);
-    alert("Gagal menyimpan: " + err.message);
-  }
-});
-
 // ─── Constants ───────────────────────────────────────────────────────────────
 const ITEMS_PER_PAGE = 4;
 let currentPage = 0;
@@ -203,3 +166,39 @@ form.addEventListener("submit", async (e) => {
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 renderSect3();
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const title = document.getElementById("news_title").value.trim();
+  const desc = document.getElementById("news_desc").value.trim();
+  const content = document.getElementById("news_content").value.trim();
+  const file = imageInput.files[0];
+
+  console.log("submit fired", { title, desc, content, file });
+
+  if (!title || !desc || !content || !file)
+    return alert("Mohon lengkapi semua field.");
+
+  try {
+    console.log("uploading image...");
+    const image_url = await uploadImage(file);
+    console.log("image uploaded", image_url);
+
+    console.log("inserting news...");
+    await insertNews({
+      title,
+      description: desc,
+      content,
+      image_url,
+      section: "viral",
+    });
+    console.log("news inserted");
+
+    currentPage = 0;
+    await renderSect3();
+    closeModal();
+  } catch (err) {
+    console.error("full error:", err);
+    alert("Gagal menyimpan: " + err.message);
+  }
+});
