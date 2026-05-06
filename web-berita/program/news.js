@@ -137,6 +137,24 @@ imageInput.addEventListener("change", () => {
   reader.readAsDataURL(file);
 });
 
+document.getElementById("btn_bold").addEventListener("click", () => {
+  const ta = document.getElementById("news_content");
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const selected = ta.value.substring(start, end);
+  ta.value =
+    ta.value.substring(0, start) + `**${selected}**` + ta.value.substring(end);
+});
+
+document.getElementById("btn_italic").addEventListener("click", () => {
+  const ta = document.getElementById("news_content");
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const selected = ta.value.substring(start, end);
+  ta.value =
+    ta.value.substring(0, start) + `*${selected}*` + ta.value.substring(end);
+});
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = document.getElementById("news_title").value.trim();
