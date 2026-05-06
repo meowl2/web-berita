@@ -20,7 +20,7 @@ async function renderSect3() {
 
   const wrapper = document.getElementById("sect3_dynamic_wrapper");
   const indicator = document.getElementById("sect3_indicator");
-  const pages = totalPages(viral);
+  const pages = totalPages(featured);
 
   if (currentPage >= pages) currentPage = pages - 1;
   if (currentPage < 0) currentPage = 0;
@@ -29,7 +29,7 @@ async function renderSect3() {
 
   wrapper.innerHTML = "";
 
-  if (viral.length === 0) {
+  if (featured.length === 0) {
     wrapper.innerHTML = `
       <div class="sect3_empty">
         <p>Belum ada berita. Tambahkan berita pertama!</p>
@@ -38,7 +38,7 @@ async function renderSect3() {
   }
 
   const start = currentPage * ITEMS_PER_PAGE;
-  const slice = viral.slice(start, start + ITEMS_PER_PAGE);
+  const slice = featured.slice(start, start + ITEMS_PER_PAGE);
 
   const grid = document.createElement("div");
   grid.className = "berita_sect_3_main";
@@ -87,8 +87,8 @@ document.getElementById("prev_sect3").addEventListener("click", async () => {
 
 document.getElementById("next_sect3").addEventListener("click", async () => {
   const news = await getAllNews();
-  const viral = news.filter((n) => n.section === "viral");
-  if (currentPage < totalPages(viral) - 1) {
+  const featured = news.filter((n) => n.section === "featured");
+  if (currentPage < totalPages(featured) - 1) {
     currentPage++;
     await renderSect3();
   }
