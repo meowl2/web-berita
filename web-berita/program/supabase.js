@@ -17,7 +17,7 @@ async function dbFetch(path, options = {}) {
 }
 
 export async function getAllNews() {
-  return dbFetch("news?select=*&order=created_at.description");
+  return dbFetch("news?select=*&order=created_at.desc");
 }
 
 export async function getNewsById(id) {

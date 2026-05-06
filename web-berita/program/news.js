@@ -144,7 +144,7 @@ form.addEventListener("submit", async (e) => {
   const content = document.getElementById("news_content").value.trim();
   const file = imageInput.files[0];
 
-  if (!title || !description || !content || !file)
+  if (!title || !desc || !content || !file)
     return alert("Mohon lengkapi semua field.");
 
   try {
