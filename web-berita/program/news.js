@@ -140,12 +140,12 @@ imageInput.addEventListener("change", () => {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = document.getElementById("news_title").value.trim();
+  const author = document.getElementById("news_author").value.trim();
   const desc = document.getElementById("news_desc").value.trim();
   const content = document.getElementById("news_content").value.trim();
   const file = imageInput.files[0];
 
-  if (!title || !desc || !content || !file)
-    return alert("Mohon lengkapi semua field.");
+  if (!title || !desc || !content || !file || !author) return alert("Mohon lengkapi semua field.");
 
   const submitBtn = form.querySelector(".btn_primary");
   submitBtn.disabled = true;
@@ -153,7 +153,7 @@ form.addEventListener("submit", async (e) => {
 
   try {
     const image_url = await uploadImage(file);
-    await insertNews({title, description: desc, content, image_url, section: "featured",});
+    await insertNews({ title, description: desc, content, image_url, section: "featured", author });
     currentPage = 0;
     await renderSect3();
     closeModal();

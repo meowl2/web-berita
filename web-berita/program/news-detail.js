@@ -11,8 +11,6 @@ function formatDate(dateStr) {
   });
 }
 
-
-
 function renderNotFound() {
   root.innerHTML = `
     <div class="detail_error">
@@ -24,7 +22,7 @@ function renderNotFound() {
 }
 
 async function render(item) {
-  document.title = `BitMedia — ${item.title}`;
+  document.title = `ArusTeknologi — ${item.title}`;
 
   const paragraphs = item.content
     .split(/\n+/)
@@ -39,6 +37,9 @@ async function render(item) {
       <header class="detail_header">
         <a href="index.html" class="detail_back">← Kembali</a>
         <h1 class="detail_title">${item.title}</h1>
+        <p class="detail_meta">
+          Oleh ${item.author} &nbsp;·&nbsp; Diterbitkan pada ${formatDate(item.created_at)}
+        </p>
         <p class="detail_meta">Diterbitkan pada ${formatDate(item.created_at)}</p>
         <p class="detail_description">${item.description}</p>
       </header>
