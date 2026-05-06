@@ -27,6 +27,11 @@ h3 {
   color: var(--secondary-background);
 }
 
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
 /* ── Nav ─────────────────────────────────────────────────────────────────── */
 nav {
   display: flex;
