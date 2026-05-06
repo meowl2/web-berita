@@ -147,6 +147,10 @@ form.addEventListener("submit", async (e) => {
   if (!title || !desc || !content || !file)
     return alert("Mohon lengkapi semua field.");
 
+  const submitBtn = form.querySelector(".btn_primary");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Menyimpan...";
+
   try {
     const image_url = await uploadImage(file);
     await insertNews({
@@ -161,6 +165,9 @@ form.addEventListener("submit", async (e) => {
     closeModal();
   } catch (err) {
     alert("Gagal menyimpan: " + err.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Publikasikan";
   }
 });
 
@@ -191,8 +198,7 @@ async function populateLandingPage() {
   const sect1 = document.getElementById("sect1_dynamic");
   const sect2 = document.getElementById("sect2_dynamic");
 
-  if (sect1)
-    sect1.innerHTML = `
+  if (sect1) sect1.innerHTML = `
     <div class="berita_1">
       ${picked[0] ? renderLandingCard(picked[0]) : ""}
       ${picked[1] ? renderLandingCard(picked[1]) : ""}
@@ -201,8 +207,21 @@ async function populateLandingPage() {
       ${picked[2] ? renderLandingCard(picked[2]) : ""}
     </div>
     <div class="berita_2">
-      ${picked[3] ? renderLandingCard(picked[3]) : ""}
-      ${picked[4] ? renderLandingCard(picked[4]) : ""}
+      ${picked[3] ? `
+        <div>
+          <h2>${picked[3].title}</h2>
+          <p>${picked[3].description}</p>
+        </div>` : ""}
+      ${picked[4] ? `
+        <div>
+          <h2>${picked[4].title}</h2>
+          <p>${picked[4].description}</p>
+        </div>` : "" }
+      ${picked[0] ? `
+        <div>
+          <h2>${picked[0].title}</h2>
+          <p>${picked[0].description}</p>
+        </div>` : "" }
     </div>
   `;
 
