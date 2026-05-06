@@ -603,6 +603,28 @@ nav ul li a:hover {
   color: var(--text-color);
 }
 
+.editor_toolbar {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: -1px;
+}
+
+.editor_toolbar button {
+  background: white;
+  border: 1px solid #d4cfc9;
+  border-bottom: none;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-color);
+  transition: background 0.2s;
+}
+
+.editor_toolbar button:hover {
+  background: var(--primary-accent);
+  color: white;
+}
+
 /* ── Services / About ────────────────────────────────────────────────────── */
 .services {
   color: var(--cta);

@@ -40,7 +40,6 @@ async function render(item) {
         <p class="detail_meta">
           Oleh ${item.author} &nbsp;·&nbsp; Diterbitkan pada ${formatDate(item.created_at)}
         </p>
-        <p class="detail_meta">Diterbitkan pada ${formatDate(item.created_at)}</p>
         <p class="detail_description">${item.description}</p>
       </header>
 
