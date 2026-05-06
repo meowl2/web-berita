@@ -167,38 +167,50 @@ form.addEventListener("submit", async (e) => {
 // ─── Init ─────────────────────────────────────────────────────────────────────
 renderSect3();
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const title = document.getElementById("news_title").value.trim();
-  const desc = document.getElementById("news_desc").value.trim();
-  const content = document.getElementById("news_content").value.trim();
-  const file = imageInput.files[0];
+function pickRandom(arr, count) {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
 
-  console.log("submit fired", { title, desc, content, file });
+function renderLandingCard(item) {
+  return `
+    <a class="sect_card_link" href="news-detail.html?id=${item.id}">
+      <img src="${item.image_url}" alt="${item.title}" />
+      <h2>${item.title}</h2>
+      <p>${item.description}</p>
+    </a>
+  `;
+}
 
-  if (!title || !desc || !content || !file)
-    return alert("Mohon lengkapi semua field.");
+async function populateLandingPage() {
+  const news = await getAllNews();
+  if (news.length === 0) return;
 
-  try {
-    console.log("uploading image...");
-    const image_url = await uploadImage(file);
-    console.log("image uploaded", image_url);
+  const picked = pickRandom(news, 5);
 
-    console.log("inserting news...");
-    await insertNews({
-      title,
-      description: desc,
-      content,
-      image_url,
-      section: "viral",
-    });
-    console.log("news inserted");
+  const sect1 = document.getElementById("sect1_dynamic");
+  const sect2 = document.getElementById("sect2_dynamic");
 
-    currentPage = 0;
-    await renderSect3();
-    closeModal();
-  } catch (err) {
-    console.error("full error:", err);
-    alert("Gagal menyimpan: " + err.message);
-  }
-});
+  if (sect1)
+    sect1.innerHTML = `
+    <div class="berita_1">
+      ${picked[0] ? renderLandingCard(picked[0]) : ""}
+      ${picked[1] ? renderLandingCard(picked[1]) : ""}
+    </div>
+    <div class="trending">
+      ${picked[2] ? renderLandingCard(picked[2]) : ""}
+    </div>
+    <div class="berita_2">
+      ${picked[3] ? renderLandingCard(picked[3]) : ""}
+      ${picked[4] ? renderLandingCard(picked[4]) : ""}
+    </div>
+  `;
+
+  if (sect2)
+    sect2.innerHTML = `
+    ${picked[3] ? renderLandingCard(picked[3]) : ""}
+    ${picked[4] ? renderLandingCard(picked[4]) : ""}
+  `;
+}
+
+populateLandingPage();
