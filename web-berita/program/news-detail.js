@@ -32,11 +32,12 @@ async function render(item) {
     .map((p) => `<p>${p.trim()}</p>`)
     .join("");
 
+        // <div class="detail_tag">Berita</div>;
+
   root.innerHTML = `
     <article class="detail_article">
       <header class="detail_header">
         <a href="index.html" class="detail_back">← Kembali</a>
-        <div class="detail_tag">Berita</div>
         <h1 class="detail_title">${item.title}</h1>
         <p class="detail_meta">Diterbitkan pada ${formatDate(item.created_at)}</p>
         <p class="detail_description">${item.description}</p>
