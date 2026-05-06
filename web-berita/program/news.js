@@ -140,7 +140,7 @@ imageInput.addEventListener("change", () => {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = document.getElementById("news_title").value.trim();
-  const description = document.getElementById("news_desc").value.trim();
+  const desc = document.getElementById("news_desc").value.trim();
   const content = document.getElementById("news_content").value.trim();
   const file = imageInput.files[0];
 
