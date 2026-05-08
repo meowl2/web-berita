@@ -46,4 +46,12 @@ export async function initNav() {
     `,
     );
   }
+
+  const hamburger = document.getElementById("nav_hamburger");
+  const menu = document.getElementById("nav_menu");
+
+  hamburger?.addEventListener("click", () => {
+    hamburger.classList.toggle("active");
+    menu.classList.toggle("active");
+  });
 }
