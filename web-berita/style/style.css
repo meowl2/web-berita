@@ -95,22 +95,25 @@ nav ul li a:hover {
   align-items: center;
   gap: 0.5rem;
   background: none;
-  border: none;
+  border: 1px solid var(--cta);
+  border-radius: 2rem;
   cursor: pointer;
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--text-color);
-  padding: 0.25rem 0;
+  padding: 0.2rem 0.75rem 0.2rem 0.2rem;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .nav_profile_btn:hover {
+  border-color: #9a5e28;
   color: var(--cta);
 }
 
 .nav_avatar {
   width: 2rem;
   height: 2rem;
-  background: var(--secondary-background);
+  background: var(--cta);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -118,7 +121,14 @@ nav ul li a:hover {
   justify-content: center;
   font-weight: 700;
   font-size: 0.85rem;
+  border: 2px solid var(--cta);
+  transition: background 0.2s, transform 0.2s;
 }
+
+.nav_profile_btn:hover .nav_avatar {
+  background: #9a5e28;
+  transform: scale(1.1);
+}   
 
 .nav_dropdown {
   position: absolute;
