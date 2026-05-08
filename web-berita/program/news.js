@@ -1,3 +1,6 @@
+import { initNav } from "./nav.js";
+initNav();
+
 import {
   getAllNews,
   insertNews,
@@ -163,7 +166,8 @@ form.addEventListener("submit", async (e) => {
   const content = document.getElementById("news_content").value.trim();
   const file = imageInput.files[0];
 
-  if (!title || !desc || !content || !file || !author) return alert("Mohon lengkapi semua field.");
+  if (!title || !desc || !content || !file || !author)
+    return alert("Mohon lengkapi semua field.");
 
   const submitBtn = form.querySelector(".btn_primary");
   submitBtn.disabled = true;
@@ -171,7 +175,14 @@ form.addEventListener("submit", async (e) => {
 
   try {
     const image_url = await uploadImage(file);
-    await insertNews({ title, description: desc, content, image_url, section: "featured", author });
+    await insertNews({
+      title,
+      description: desc,
+      content,
+      image_url,
+      section: "featured",
+      author,
+    });
     currentPage = 0;
     await renderSect3();
     closeModal();
@@ -210,7 +221,8 @@ async function populateLandingPage() {
   const sect1 = document.getElementById("sect1_dynamic");
   const sect2 = document.getElementById("sect2_dynamic");
 
-    if (sect1) sect1.innerHTML = `
+  if (sect1)
+    sect1.innerHTML = `
     <div class="berita_1">
       ${picked[0] ? renderLandingCard(picked[0]) : ""}
       ${picked[1] ? renderLandingCard(picked[1]) : ""}
@@ -219,21 +231,33 @@ async function populateLandingPage() {
       ${picked[2] ? renderLandingCard(picked[2]) : ""}
     </div>
     <div class="berita_2">
-      ${picked[3] ? `
+      ${
+        picked[3]
+          ? `
         <div>
           <h2>${picked[3].title}</h2>
           <p>${picked[3].description}</p>
-        </div>` : "" }
-      ${picked[4] ? `
+        </div>`
+          : ""
+      }
+      ${
+        picked[4]
+          ? `
         <div>
           <h2>${picked[4].title}</h2>
           <p>${picked[4].description}</p>
-        </div>` : "" }
-      ${ picked[5] ? `
+        </div>`
+          : ""
+      }
+      ${
+        picked[5]
+          ? `
         <div>
           <h2>${picked[5].title}</h2>
           <p>${picked[5].description}</p>
-        </div>` : "" }
+        </div>`
+          : ""
+      }
     </div>
   `;
 

@@ -1,4 +1,15 @@
+import { initNav } from "./nav.js";
+initNav();
+
 import { signIn, signUp } from "./supabase.js";
+
+import { getUser } from "./supabase.js";
+import { initNav } from "./nav.js";
+
+initNav();
+
+// Redirect if already logged in
+if (getUser()) window.location.href = "index.html";
 
 const tabLogin = document.getElementById("tab_login");
 const tabRegister = document.getElementById("tab_register");

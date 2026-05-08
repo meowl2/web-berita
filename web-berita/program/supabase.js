@@ -101,6 +101,19 @@ export function getUser() {
   return getSession()?.user ?? null;
 }
 
+export async function signOut() {
+  const session = getSession();
+  await fetch(`${SUPABASE_URL}/auth/v1/logout`, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${session?.access_token}`,
+    },
+  });
+  localStorage.removeItem("sb_session");
+  window.location.href = "index.html";
+}
+
 // async function dbFetch(path, options = {}) {
 //   const session = getSession();
 //   const token = session?.access_token ?? SUPABASE_KEY;

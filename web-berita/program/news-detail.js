@@ -1,3 +1,6 @@
+import { initNav } from "./nav.js";
+initNav();
+
 import { getNewsById } from "./supabase.js";
 
 const root = document.getElementById("detail_root");
@@ -30,7 +33,7 @@ async function render(item) {
     .map((p) => `<p>${p.trim()}</p>`)
     .join("");
 
-        // <div class="detail_tag">Berita</div>;
+  // <div class="detail_tag">Berita</div>;
 
   root.innerHTML = `
     <article class="detail_article">
@@ -68,4 +71,3 @@ if (!id) {
     .then((item) => (item ? render(item) : renderNotFound()))
     .catch(() => renderNotFound());
 }
-    

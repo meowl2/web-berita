@@ -71,6 +71,21 @@ nav ul li a:hover {
   color: var(--cta);
 }
 
+.nav_logout_btn {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.nav_logout_btn:hover {
+  color: var(--cta);
+}
+
 /* ── Hero ────────────────────────────────────────────────────────────────── */
 .hero {
   height: 40vh;
