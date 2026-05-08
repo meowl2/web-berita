@@ -42,7 +42,7 @@ async function dbFetch(path, options = {}) {
   return res.status === 204 ? null : res.json();
 }
 export async function getAllNews() {
-  return dbFetch("news?select=*&order=created_at.desc");
+  return dbFetch("news?status=eq.published&select=*&order=created_at.desc");
 }
 
 export async function getNewsById(id) {
