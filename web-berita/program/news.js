@@ -1,6 +1,4 @@
 import { initNav } from "./nav.js";
-await initNav();
-
 import {
   getAllNews,
   insertNews,
@@ -10,6 +8,7 @@ import {
 } from "./supabase.js";
 
 const user = getUser();
+await initNav();
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const ITEMS_PER_PAGE = 4;
