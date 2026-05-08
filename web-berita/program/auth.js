@@ -4,7 +4,6 @@ initNav();
 import { signIn, signUp } from "./supabase.js";
 
 import { getUser } from "./supabase.js";
-import { initNav } from "./nav.js";
 
 initNav();
 
