@@ -182,6 +182,7 @@ form.addEventListener("submit", async (e) => {
       image_url,
       section: "featured",
       author,
+      user_id: user.id,
     });
     currentPage = 0;
     await renderSect3();
