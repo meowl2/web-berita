@@ -746,32 +746,132 @@ footer {
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
+  /* Nav */
+  nav {
+    padding: 0.5rem 3%;
+  }
+
+  nav ul {
+    gap: 0.75rem;
+  }
+
+  nav ul li a {
+    font-size: 0.85rem;
+  }
+
+  .nav_profile_btn span {
+    display: none; /* hide username text, show only avatar */
+  }
+
+  .nav_profile_btn {
+    padding: 0.2rem 0.4rem 0.2rem 0.2rem;
+  }
+
+  .nav_dropdown {
+    right: 0;
+    left: auto;
+    min-width: 140px;
+  }
+
+  /* Hero */
+  .hero {
+    height: 12vh;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  /* Sect 1 */
   .berita_sect_1 {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  .berita_sect_3_main {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .hero h1 {
-    font-size: 2.5rem;
+  .berita_sect_1 img {
+    height: 220px;
   }
 
+  /* Sect 2 */
   .berita_sect_2_main {
     grid-template-columns: 1fr;
   }
 
+  .berita_sect_2 {
+    min-height: unset;
+  }
+
+  /* Sect 3 */
   .berita_sect_3_main {
     grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
   }
 
   .sect3_header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  /* Container */
+  .container {
+    padding: 1rem 3%;
+  }
+
+  /* Dashboard */
+  .dashboard_stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dashboard_item {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .dashboard_item .status_badge {
+    grid-column: 2;
+  }
+
+  /* Admin */
+  .admin_item {
+    grid-template-columns: 60px 1fr;
     gap: 0.75rem;
+  }
+
+  .admin_actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  /* Modal */
+  .modal_box {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .berita_sect_3_main {
+    grid-template-columns: 1fr;
+  }
+
+  nav .logo {
+    font-size: 1.2rem;
+  }
+
+  .dashboard_stats {
+    grid-template-columns: 1fr;
+  }
+
+  .nav_dropdown {
+    right: 0;
+    left: auto;
+    min-width: 120px;
+    font-size: 0.85rem;
+  }
+
+  .nav_dropdown_item {
+    padding: 0.6rem 0.75rem;
   }
 }
