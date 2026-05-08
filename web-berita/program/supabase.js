@@ -3,10 +3,13 @@ const SUPABASE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbHJidHB4cHJ3aXdsZW5rbGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5ODUzODksImV4cCI6MjA5MzU2MTM4OX0.oWHgsH8MWvk27Y3L4afdVu7JCsBoAcglDEZvbsVQ_s0";
 
 async function dbFetch(path, options = {}) {
+  const session = getSession();
+  const token = session?.access_token ?? SUPABASE_KEY;
+
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     headers: {
       apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${SUPABASE_KEY}`,
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
       Prefer: "return=representation",
     },
@@ -98,19 +101,19 @@ export function getUser() {
   return getSession()?.user ?? null;
 }
 
-async function dbFetch(path, options = {}) {
-  const session = getSession();
-  const token = session?.access_token ?? SUPABASE_KEY;
+// async function dbFetch(path, options = {}) {
+//   const session = getSession();
+//   const token = session?.access_token ?? SUPABASE_KEY;
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      Prefer: "return=representation",
-    },
-    ...options,
-  });
-  if (!res.ok) throw new Error(await res.text());
-  return res.status === 204 ? null : res.json();
-}
+//   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+//     headers: {
+//       apikey: SUPABASE_KEY,
+//       Authorization: `Bearer ${token}`,
+//       "Content-Type": "application/json",
+//       Prefer: "return=representation",
+//     },
+//     ...options,
+//   });
+//   if (!res.ok) throw new Error(await res.text());
+//   return res.status === 204 ? null : res.json();
+// }
