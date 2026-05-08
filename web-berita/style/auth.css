@@ -10,7 +10,7 @@
   width: 100%;
   max-width: 420px;
   border: 1px solid #d4cfc9;
-  padding: 4rem;
+  padding: 2rem;
 }
 
 .auth_tabs {
@@ -41,6 +41,7 @@
 .auth_submit {
   width: 100%;
   padding: 0.75rem;
+  padding-top: 2rem;
   margin-top: 0.5rem;
 }
 
