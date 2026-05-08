@@ -56,3 +56,61 @@ export async function uploadImage(file) {
   return `${SUPABASE_URL}/storage/v1/object/public/news-images/${filename}`;
 }
 
+const SUPABASE_AUTH = `${SUPABASE_URL}/auth/v1`;
+
+export async function signUp(email, password, username) {
+  const res = await fetch(`${SUPABASE_AUTH}/signup`, {
+    method: "POST",
+    headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password, options: { data: { username } } }),
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data;
+}
+
+export async function signIn(email, password) {
+  const res = await fetch(`${SUPABASE_AUTH}/token?grant_type=password`, {
+    method: "POST",
+    headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  localStorage.setItem("sb_session", JSON.stringify(data));
+  return data;
+}
+
+export function signOut() {
+  localStorage.removeItem("sb_session");
+  window.location.href = "login.html";
+}
+
+export function getSession() {
+  try {
+    return JSON.parse(localStorage.getItem("sb_session"));
+  } catch {
+    return null;
+  }
+}
+
+export function getUser() {
+  return getSession()?.user ?? null;
+}
+
+async function dbFetch(path, options = {}) {
+  const session = getSession();
+  const token = session?.access_token ?? SUPABASE_KEY;
+
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    },
+    ...options,
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.status === 204 ? null : res.json();
+}
