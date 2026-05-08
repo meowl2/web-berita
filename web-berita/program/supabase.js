@@ -7,18 +7,18 @@ async function dbFetch(path, options = {}) {
   const token = session?.access_token ?? SUPABASE_KEY;
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    ...options,
     headers: {
       apikey: SUPABASE_KEY,
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
       Prefer: "return=representation",
+      ...options.headers,
     },
-    ...options,
   });
   if (!res.ok) throw new Error(await res.text());
   return res.status === 204 ? null : res.json();
 }
-
 export async function getAllNews() {
   return dbFetch("news?select=*&order=created_at.desc");
 }
