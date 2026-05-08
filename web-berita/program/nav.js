@@ -12,7 +12,7 @@ export async function initNav() {
   if (signinLink) signinLink.closest("li").remove();
 
   if (user) {
-    const profile = await getUserProfile(user.id);
+    const profile = await getUserProfile(user.id).catch(() => null);
     const username = user.user_metadata?.username ?? user.email;
 
     navList.insertAdjacentHTML(
@@ -34,4 +34,3 @@ export async function initNav() {
     );
   }
 }
-
