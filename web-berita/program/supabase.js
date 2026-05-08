@@ -2,22 +2,47 @@ const SUPABASE_URL = "https://pilrbtpxprwiwlenklhh.supabase.co";
 const SUPABASE_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpbHJidHB4cHJ3aXdsZW5rbGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5ODUzODksImV4cCI6MjA5MzU2MTM4OX0.oWHgsH8MWvk27Y3L4afdVu7JCsBoAcglDEZvbsVQ_s0";
 
+console.log("KEY:", SUPABASE_KEY);
+console.log("URL:", SUPABASE_URL);
+
 async function dbFetch(path, options = {}) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+  const session = getSession();
+  let token = session?.access_token ?? SUPABASE_KEY;
+
+  let res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    ...options,
     headers: {
       apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${SUPABASE_KEY}`,
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
       Prefer: "return=representation",
+      ...options.headers,
     },
-    ...options,
   });
+
+  // Token expired — refresh and retry once
+  if (res.status === 401) {
+    const newSession = await refreshSession();
+    if (newSession) {
+      token = newSession.access_token;
+      res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+        ...options,
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+          ...options.headers,
+        },
+      });
+    }
+  }
+
   if (!res.ok) throw new Error(await res.text());
   return res.status === 204 ? null : res.json();
 }
-
 export async function getAllNews() {
-  return dbFetch("news?select=*&order=created_at.description");
+  return dbFetch("news?status=eq.published&select=*&order=created_at.desc");
 }
 
 export async function getNewsById(id) {
@@ -55,3 +80,115 @@ export async function uploadImage(file) {
   if (!res.ok) throw new Error(await res.text());
   return `${SUPABASE_URL}/storage/v1/object/public/news-images/${filename}`;
 }
+
+const SUPABASE_AUTH = `${SUPABASE_URL}/auth/v1`;
+
+export async function signUp(email, password, username) {
+  const res = await fetch(`${SUPABASE_AUTH}/signup`, {
+    method: "POST",
+    headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password, options: { data: { username } } }),
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data;
+}
+
+export async function signIn(email, password) {
+  const res = await fetch(`${SUPABASE_AUTH}/token?grant_type=password`, {
+    method: "POST",
+    headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  localStorage.setItem("sb_session", JSON.stringify(data));
+  return data;
+}
+
+export function getSession() {
+  try {
+    return JSON.parse(localStorage.getItem("sb_session"));
+  } catch {
+    return null;
+  }
+}
+
+export function getUser() {
+  return getSession()?.user ?? null;
+}
+
+export async function getUserProfile(userId) {
+  const rows = await dbFetch(`profiles?id=eq.${userId}&select=*`);
+  return rows?.[0] ?? null;
+}
+
+export async function signOut() {
+  const session = getSession();
+  await fetch(`${SUPABASE_URL}/auth/v1/logout`, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${session?.access_token}`,
+    },
+  }).catch(() => null);
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+
+// async function dbFetch(path, options = {}) {
+//   const session = getSession();
+//   const token = session?.access_token ?? SUPABASE_KEY;
+
+//   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+//     headers: {
+//       apikey: SUPABASE_KEY,
+//       Authorization: `Bearer ${token}`,
+//       "Content-Type": "application/json",
+//       Prefer: "return=representation",
+//     },
+//     ...options,
+//   });
+//   if (!res.ok) throw new Error(await res.text());
+//   return res.status === 204 ? null : res.json();
+// }
+
+export async function getNewsByUser(userId) {
+  return dbFetch(`news?user_id=eq.${userId}&select=*&order=created_at.desc`);
+}
+
+export async function getAllNewsByStatus(status) {
+  return dbFetch(`news?status=eq.${status}&select=*&order=created_at.desc`);
+}
+
+export async function updateNewsStatus(id, status) {
+  return dbFetch(`news?id=eq.${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });
+}
+
+export async function getAllNewsAdmin() {
+  return dbFetch(`news?select=*&order=created_at.desc`);
+}
+
+export async function refreshSession() {
+  const session = getSession();
+  if (!session?.refresh_token) return null;
+
+  const res = await fetch(`${SUPABASE_AUTH}/token?grant_type=refresh_token`, {
+    method: "POST",
+    headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ refresh_token: session.refresh_token }),
+  });
+
+  const data = await res.json();
+  if (data.error) {
+    localStorage.removeItem("sb_session");
+    return null;
+  }
+
+  localStorage.setItem("sb_session", JSON.stringify(data));
+  return data;
+}
+

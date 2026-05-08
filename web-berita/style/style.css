@@ -27,6 +27,11 @@ h3 {
   color: var(--secondary-background);
 }
 
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
 /* ── Nav ─────────────────────────────────────────────────────────────────── */
 nav {
   display: flex;
@@ -64,6 +69,210 @@ nav ul li a {
 
 nav ul li a:hover {
   color: var(--cta);
+}
+
+.nav_logout_btn {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.nav_logout_btn:hover {
+  color: var(--cta);
+}
+
+.nav_profile {
+  position: relative;
+}
+
+.nav_profile_btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: 1px solid var(--cta);
+  border-radius: 2rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-color);
+  padding: 0.2rem 0.75rem 0.2rem 0.2rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.nav_profile_btn:hover {
+  border-color: #9a5e28;
+  color: var(--cta);
+}
+
+.nav_avatar {
+  width: 2rem;
+  height: 2rem;
+  background: var(--cta);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 2px solid var(--cta);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.nav_profile_btn:hover .nav_avatar {
+  background: #9a5e28;
+  transform: scale(1.1);
+}   
+
+.nav_dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  background: white;
+  border: 1px solid #d4cfc9;
+  min-width: 160px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.nav_dropdown.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.nav_dropdown_item {
+  display: block;
+  width: 100%;
+  padding: 0.65rem 1rem;
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background 0.15s;
+}
+
+.nav_dropdown_item:hover {
+  background: #f5f2ee;
+}
+
+.nav_dropdown_logout {
+  border-top: 1px solid #d4cfc9;
+  color: #842029;
+}
+
+
+/* nav hp lek */
+.nav_hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.nav_hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text-color);
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.nav_hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav_hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav_hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .nav_hamburger {
+    display: flex;
+  }
+
+  #nav_menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--background);
+    flex-direction: column;
+    padding: 1rem 5%;
+    gap: 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 999;
+  }
+
+  #nav_menu.active {
+    display: flex;
+  }
+
+  #nav_menu li {
+    margin: 0;
+    border-bottom: 1px solid #f0ece6;
+  }
+
+  #nav_menu li a,
+  #nav_menu li button {
+    display: block;
+    padding: 0.75rem 0;
+    width: 100%;
+  }
+
+  .nav_profile {
+    width: 100%;
+  }
+
+  .nav_profile_btn {
+    width: 100%;
+    justify-content: flex-start;
+    border: none;
+    border-radius: 0;
+    padding: 0.75rem 0;
+  }
+
+  .nav_profile_btn span {
+    display: block;
+  }
+
+  .nav_dropdown {
+    position: static;
+    box-shadow: none;
+    border: none;
+    opacity: 1;
+    pointer-events: all;
+    transform: none;
+    background: #f5f2ee;
+    display: none;
+  }
+
+  .nav_dropdown.active {
+    display: block;
+  }
 }
 
 /* ── Hero ────────────────────────────────────────────────────────────────── */
@@ -598,6 +807,28 @@ nav ul li a:hover {
   color: var(--text-color);
 }
 
+.editor_toolbar {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: -1px;
+}
+
+.editor_toolbar button {
+  background: white;
+  border: 1px solid #d4cfc9;
+  border-bottom: none;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-color);
+  transition: background 0.2s;
+}
+
+.editor_toolbar button:hover {
+  background: var(--primary-accent);
+  color: white;
+}
+
 /* ── Services / About ────────────────────────────────────────────────────── */
 .services {
   color: var(--cta);
@@ -614,32 +845,132 @@ footer {
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
+  /* Nav */
+  nav {
+    padding: 0.5rem 3%;
+  }
+
+  nav ul {
+    gap: 0.75rem;
+  }
+
+  nav ul li a {
+    font-size: 0.85rem;
+  }
+
+  .nav_profile_btn span {
+    display: none; /* hide username text, show only avatar */
+  }
+
+  .nav_profile_btn {
+    padding: 0.2rem 0.4rem 0.2rem 0.2rem;
+  }
+
+  .nav_dropdown {
+    right: 0;
+    left: auto;
+    min-width: 140px;
+  }
+
+  /* Hero */
+  .hero {
+    height: 12vh;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  /* Sect 1 */
   .berita_sect_1 {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  .berita_sect_3_main {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .hero h1 {
-    font-size: 2.5rem;
+  .berita_sect_1 img {
+    height: 220px;
   }
 
+  /* Sect 2 */
   .berita_sect_2_main {
     grid-template-columns: 1fr;
   }
 
+  .berita_sect_2 {
+    min-height: unset;
+  }
+
+  /* Sect 3 */
   .berita_sect_3_main {
     grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
   }
 
   .sect3_header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  /* Container */
+  .container {
+    padding: 1rem 3%;
+  }
+
+  /* Dashboard */
+  .dashboard_stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dashboard_item {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .dashboard_item .status_badge {
+    grid-column: 2;
+  }
+
+  /* Admin */
+  .admin_item {
+    grid-template-columns: 60px 1fr;
     gap: 0.75rem;
+  }
+
+  .admin_actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  /* Modal */
+  .modal_box {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .berita_sect_3_main {
+    grid-template-columns: 1fr;
+  }
+
+  nav .logo {
+    font-size: 1.2rem;
+  }
+
+  .dashboard_stats {
+    grid-template-columns: 1fr;
+  }
+
+  .nav_dropdown {
+    right: 0;
+    left: auto;
+    min-width: 120px;
+    font-size: 0.85rem;
+  }
+
+  .nav_dropdown_item {
+    padding: 0.6rem 0.75rem;
   }
 }

@@ -1,9 +1,15 @@
+import { initNav } from "./nav.js";
 import {
   getAllNews,
   insertNews,
   deleteNewsById,
   uploadImage,
+  getUser,
+  getUserProfile,
 } from "./supabase.js";
+
+const user = getUser();
+await initNav();
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const ITEMS_PER_PAGE = 4;
@@ -16,11 +22,11 @@ function totalPages(news) {
 
 async function renderSect3() {
   const news = await getAllNews();
-  const viral = news.filter((n) => n.section === "viral");
+  const featured = news.filter((n) => n.section === "featured");
 
   const wrapper = document.getElementById("sect3_dynamic_wrapper");
   const indicator = document.getElementById("sect3_indicator");
-  const pages = totalPages(viral);
+  const pages = totalPages(featured);
 
   if (currentPage >= pages) currentPage = pages - 1;
   if (currentPage < 0) currentPage = 0;
@@ -29,7 +35,7 @@ async function renderSect3() {
 
   wrapper.innerHTML = "";
 
-  if (viral.length === 0) {
+  if (featured.length === 0) {
     wrapper.innerHTML = `
       <div class="sect3_empty">
         <p>Belum ada berita. Tambahkan berita pertama!</p>
@@ -38,7 +44,7 @@ async function renderSect3() {
   }
 
   const start = currentPage * ITEMS_PER_PAGE;
-  const slice = viral.slice(start, start + ITEMS_PER_PAGE);
+  const slice = featured.slice(start, start + ITEMS_PER_PAGE);
 
   const grid = document.createElement("div");
   grid.className = "berita_sect_3_main";
@@ -87,8 +93,8 @@ document.getElementById("prev_sect3").addEventListener("click", async () => {
 
 document.getElementById("next_sect3").addEventListener("click", async () => {
   const news = await getAllNews();
-  const viral = news.filter((n) => n.section === "viral");
-  if (currentPage < totalPages(viral) - 1) {
+  const featured = news.filter((n) => n.section === "featured");
+  if (currentPage < totalPages(featured) - 1) {
     currentPage++;
     await renderSect3();
   }
@@ -102,10 +108,10 @@ const form = document.getElementById("upload_form");
 const imageInput = document.getElementById("news_image");
 const imagePreview = document.getElementById("image_preview");
 
-openBtn.addEventListener("click", () => {
-  modal.classList.add("active");
-  document.body.style.overflow = "hidden";
-});
+// openBtn.addEventListener("click", () => {
+//   modal.classList.add("active");
+//   document.body.style.overflow = "hidden";
+// });
 
 function closeModal() {
   modal.classList.remove("active");
@@ -137,32 +143,135 @@ imageInput.addEventListener("change", () => {
   reader.readAsDataURL(file);
 });
 
+document.getElementById("btn_bold").addEventListener("click", () => {
+  const ta = document.getElementById("news_content");
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const selected = ta.value.substring(start, end);
+  ta.value =
+    ta.value.substring(0, start) + `**${selected}**` + ta.value.substring(end);
+});
+
+document.getElementById("btn_italic").addEventListener("click", () => {
+  const ta = document.getElementById("news_content");
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const selected = ta.value.substring(start, end);
+  ta.value =
+    ta.value.substring(0, start) + `*${selected}*` + ta.value.substring(end);
+});
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = document.getElementById("news_title").value.trim();
-  const description = document.getElementById("news_desc").value.trim();
+  const desc = document.getElementById("news_desc").value.trim();
   const content = document.getElementById("news_content").value.trim();
   const file = imageInput.files[0];
 
-  if (!title || !description || !content || !file)
+  if (!title || !desc || !content || !file)
     return alert("Mohon lengkapi semua field.");
 
+  const submitBtn = form.querySelector(".btn_primary");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Menyimpan...";
+
   try {
+    const profile = await getUserProfile(user.id).catch(() => null);
+    const author = profile?.username ?? user.email;
+
     const image_url = await uploadImage(file);
     await insertNews({
       title,
       description: desc,
       content,
       image_url,
-      section: "viral",
+      section: "featured",
+      author,
+      user_id: user.id,
     });
     currentPage = 0;
     await renderSect3();
     closeModal();
   } catch (err) {
     alert("Gagal menyimpan: " + err.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Publikasikan";
   }
 });
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 renderSect3();
+
+function pickRandom(arr, count) {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
+
+function renderLandingCard(item) {
+  return `
+    <a class="sect_card_link" href="news-detail.html?id=${item.id}">
+      <img src="${item.image_url}" alt="${item.title}" />
+      <h2>${item.title}</h2>
+      <p>${item.description}</p>
+    </a>
+  `;
+}
+
+async function populateLandingPage() {
+  const news = await getAllNews();
+  if (news.length === 0) return;
+
+  const picked = pickRandom(news, 6);
+
+  const sect1 = document.getElementById("sect1_dynamic");
+  const sect2 = document.getElementById("sect2_dynamic");
+
+  if (sect1)
+    sect1.innerHTML = `
+    <div class="berita_1">
+      ${picked[0] ? renderLandingCard(picked[0]) : ""}
+      ${picked[1] ? renderLandingCard(picked[1]) : ""}
+    </div>
+    <div class="trending">
+      ${picked[2] ? renderLandingCard(picked[2]) : ""}
+    </div>
+    <div class="berita_2">
+      ${
+        picked[3]
+          ? `
+        <div>
+          <h2>${picked[3].title}</h2>
+          <p>${picked[3].description}</p>
+        </div>`
+          : ""
+      }
+      ${
+        picked[4]
+          ? `
+        <div>
+          <h2>${picked[4].title}</h2>
+          <p>${picked[4].description}</p>
+        </div>`
+          : ""
+      }
+      ${
+        picked[5]
+          ? `
+        <div>
+          <h2>${picked[5].title}</h2>
+          <p>${picked[5].description}</p>
+        </div>`
+          : ""
+      }
+    </div>
+  `;
+
+  if (sect2)
+    sect2.innerHTML = `
+    ${picked[3] ? renderLandingCard(picked[3]) : ""}
+    ${picked[4] ? renderLandingCard(picked[4]) : ""}
+  `;
+}
+
+populateLandingPage();

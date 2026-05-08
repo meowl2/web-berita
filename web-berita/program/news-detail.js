@@ -1,3 +1,6 @@
+import { initNav } from "./nav.js";
+await initNav();
+
 import { getNewsById } from "./supabase.js";
 
 const root = document.getElementById("detail_root");
@@ -11,8 +14,6 @@ function formatDate(dateStr) {
   });
 }
 
-
-
 function renderNotFound() {
   root.innerHTML = `
     <div class="detail_error">
@@ -24,7 +25,7 @@ function renderNotFound() {
 }
 
 async function render(item) {
-  document.title = `BitMedia — ${item.title}`;
+  document.title = `ArusTeknologi — ${item.title}`;
 
   const paragraphs = item.content
     .split(/\n+/)
@@ -32,13 +33,16 @@ async function render(item) {
     .map((p) => `<p>${p.trim()}</p>`)
     .join("");
 
+  // <div class="detail_tag">Berita</div>;
+
   root.innerHTML = `
     <article class="detail_article">
       <header class="detail_header">
         <a href="index.html" class="detail_back">← Kembali</a>
-        <div class="detail_tag">Viral</div>
         <h1 class="detail_title">${item.title}</h1>
-        <p class="detail_meta">Diterbitkan pada ${formatDate(item.created_at)}</p>
+        <p class="detail_meta">
+          Oleh ${item.author} &nbsp;·&nbsp; Diterbitkan pada ${formatDate(item.created_at)}
+        </p>
         <p class="detail_description">${item.description}</p>
       </header>
 
@@ -67,4 +71,3 @@ if (!id) {
     .then((item) => (item ? render(item) : renderNotFound()))
     .catch(() => renderNotFound());
 }
-    
