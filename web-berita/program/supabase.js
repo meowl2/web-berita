@@ -125,3 +125,6 @@ export async function signOut() {
 //   if (!res.ok) throw new Error(await res.text());
 //   return res.status === 204 ? null : res.json();
 // }
+
+console.log("KEY:", SUPABASE_KEY);
+console.log("URL:", SUPABASE_URL);
