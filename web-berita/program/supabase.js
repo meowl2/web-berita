@@ -84,11 +84,6 @@ export async function signIn(email, password) {
   return data;
 }
 
-export function signOut() {
-  localStorage.removeItem("sb_session");
-  window.location.href = "login.html";
-}
-
 export function getSession() {
   try {
     return JSON.parse(localStorage.getItem("sb_session"));
