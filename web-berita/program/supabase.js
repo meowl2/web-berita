@@ -129,5 +129,6 @@ export async function signOut() {
 //   return res.status === 204 ? null : res.json();
 // }
 
-console.log("KEY:", SUPABASE_KEY);
-console.log("URL:", SUPABASE_URL);
+export async function getNewsByUser(userId) {
+  return dbFetch(`news?user_id=eq.${userId}&select=*&order=created_at.desc`);
+}

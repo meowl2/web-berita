@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BitMedia — Dashboard</title>
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/dashboard.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="logo">BitMedia</div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+      </ul>
+    </nav>
+
+    <main class="dashboard_container">
+      <div class="dashboard_header">
+        <h1>Dashboard</h1>
+        <button id="open_upload_modal" class="btn_primary">+ Tambah Berita</button>
+      </div>
+
+      <div class="dashboard_stats" id="dashboard_stats"></div>
+      <div class="dashboard_list" id="dashboard_list"></div>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 BitMedia</p>
+    </footer>
+
+    <!-- Upload Modal (same as index.html) -->
+    <div id="upload_modal" class="modal_overlay" role="dialog" aria-modal="true">
+      <div class="modal_box">
+        <div class="modal_header">
+          <h2>Tambah Berita</h2>
+          <button id="close_modal" class="modal_close">&#x2715;</button>
+        </div>
+        <form id="upload_form" novalidate>
+          <div class="form_group">
+            <label for="news_title">Judul Berita</label>
+            <input type="text" id="news_title" placeholder="Masukkan judul berita..." maxlength="100" required />
+          </div>
+          <div class="form_group">
+            <label for="news_author">Penulis</label>
+            <input type="text" id="news_author" placeholder="Nama penulis..." maxlength="50" required />
+          </div>
+          <div class="form_group">
+            <label for="news_desc">Deskripsi Singkat</label>
+            <textarea id="news_desc" placeholder="Tulis deskripsi singkat..." rows="2" maxlength="150" required></textarea>
+          </div>
+          <div class="form_group">
+            <label for="news_content">Isi Berita</label>
+            <div class="editor_toolbar">
+              <button type="button" id="btn_bold"><strong>B</strong></button>
+              <button type="button" id="btn_italic"><em>I</em></button>
+            </div>
+            <textarea id="news_content" placeholder="Tulis isi lengkap berita di sini..." rows="6" required></textarea>
+          </div>
+          <div class="form_group">
+            <label for="news_image">Gambar (maks. 5MB)</label>
+            <label class="file_upload_label" for="news_image">
+              <span>&#128247; Pilih Gambar</span>
+              <input type="file" id="news_image" accept="image/*" required />
+            </label>
+            <img id="image_preview" class="hidden" alt="Preview" />
+          </div>
+          <div class="form_actions">
+            <button type="button" id="close_modal_2" class="btn_secondary">Batal</button>
+            <button type="submit" class="btn_primary">Publikasikan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="program/dashboard.js"></script>
+  </body>
+</html>
