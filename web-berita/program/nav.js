@@ -13,7 +13,7 @@ export async function initNav() {
 
     navList.insertAdjacentHTML(
       "beforeend", `
-      ${profile?.role === "admin" ? `<li><a href="admin.html">Admin</a></li>` : ""}
+      ${profile?.role === "admin" ? `<li><a href="admin.html">Admin Panel</a></li>` : ""}
       <li class="nav_profile">
         <button class="nav_profile_btn" id="nav_profile_btn">
           <div class="nav_avatar">${username.charAt(0).toUpperCase()}</div>

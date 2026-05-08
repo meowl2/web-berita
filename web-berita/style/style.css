@@ -143,6 +143,7 @@ nav ul li a:hover {
   transform: translateY(-8px);
   transition: opacity 0.2s, transform 0.2s;
   z-index: 999;
+  overflow: hidden;
 }
 
 .nav_dropdown.active {
