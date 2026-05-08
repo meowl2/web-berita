@@ -9,16 +9,13 @@ export async function initNav() {
 
   if (user) {
     const profile = await getUserProfile(user.id).catch(() => null);
-    const username = user.user_metadata?.username ?? user.email;
+    const username = profile?.username ?? user.email.split("@")[0];
 
-    navList.insertAdjacentHTML(
-      "beforeend",
-      `
-      <li><a href="dashboard.html">📝 ${username}</a></li>
-      ${profile?.role === "admin" ? `<li><a href="admin.html">⚙️ Admin</a></li>` : ""}
+    navList.insertAdjacentHTML("beforeend",`
+      ${profile?.role === "admin" ? `<li><a href="admin.html">Admin</a></li>` : ""}      
+      <li><a href="dashboard.html">${username}</a></li>
       <li><button id="nav_logout" class="nav_logout_btn">Logout</button></li>
-    `,
-    );
+    `,);
 
     document.getElementById("nav_logout").addEventListener("click", signOut);
   } else {
