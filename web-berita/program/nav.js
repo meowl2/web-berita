@@ -16,7 +16,7 @@ export function initNav() {
       "beforeend",
       `
       <li><a href="dashboard.html" id="nav_dashboard">📝 ${username}</a></li>
-      <li><button id="nav_logout" class="nav_logout_btn">Keluar</button></li>
+      <li><button id="nav_logout" class="nav_logout_btn">Logout</button></li>
     `,
     );
 
@@ -25,7 +25,7 @@ export function initNav() {
     navList.insertAdjacentHTML(
       "beforeend",
       `
-      <li><a href="login.html">Masuk</a></li>
+      <li><a href="login.html">Login</a></li>
     `,
     );
   }
