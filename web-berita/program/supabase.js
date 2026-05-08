@@ -7,9 +7,9 @@ console.log("URL:", SUPABASE_URL);
 
 async function dbFetch(path, options = {}) {
   const session = getSession();
-  const token = session?.access_token ?? SUPABASE_KEY;
+  let token = session?.access_token ?? SUPABASE_KEY;
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+  let res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...options,
     headers: {
       apikey: SUPABASE_KEY,
@@ -19,6 +19,25 @@ async function dbFetch(path, options = {}) {
       ...options.headers,
     },
   });
+
+  // Token expired — refresh and retry once
+  if (res.status === 401) {
+    const newSession = await refreshSession();
+    if (newSession) {
+      token = newSession.access_token;
+      res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+        ...options,
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+          ...options.headers,
+        },
+      });
+    }
+  }
+
   if (!res.ok) throw new Error(await res.text());
   return res.status === 204 ? null : res.json();
 }
@@ -173,39 +192,3 @@ export async function refreshSession() {
   return data;
 }
 
-async function dbFetch(path, options = {}) {
-  const session = getSession();
-  let token = session?.access_token ?? SUPABASE_KEY;
-
-  let res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-    ...options,
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      Prefer: "return=representation",
-      ...options.headers,
-    },
-  });
-
-  // Token expired — refresh and retry once
-  if (res.status === 401) {
-    const newSession = await refreshSession();
-    if (newSession) {
-      token = newSession.access_token;
-      res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-        ...options,
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          Prefer: "return=representation",
-          ...options.headers,
-        },
-      });
-    }
-  }
-
-  if (!res.ok) throw new Error(await res.text());
-  return res.status === 204 ? null : res.json();
-}
