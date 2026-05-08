@@ -1,3 +1,6 @@
+import { initNav } from "./nav.js";
+await initNav();
+
 document.getElementById("contactForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
