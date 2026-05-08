@@ -152,3 +152,60 @@ export async function updateNewsStatus(id, status) {
 export async function getAllNewsAdmin() {
   return dbFetch(`news?select=*&order=created_at.desc`);
 }
+
+export async function refreshSession() {
+  const session = getSession();
+  if (!session?.refresh_token) return null;
+
+  const res = await fetch(`${SUPABASE_AUTH}/token?grant_type=refresh_token`, {
+    method: "POST",
+    headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ refresh_token: session.refresh_token }),
+  });
+
+  const data = await res.json();
+  if (data.error) {
+    localStorage.removeItem("sb_session");
+    return null;
+  }
+
+  localStorage.setItem("sb_session", JSON.stringify(data));
+  return data;
+}
+
+async function dbFetch(path, options = {}) {
+  const session = getSession();
+  let token = session?.access_token ?? SUPABASE_KEY;
+
+  let res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    ...options,
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+      ...options.headers,
+    },
+  });
+
+  // Token expired — refresh and retry once
+  if (res.status === 401) {
+    const newSession = await refreshSession();
+    if (newSession) {
+      token = newSession.access_token;
+      res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+        ...options,
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+          ...options.headers,
+        },
+      });
+    }
+  }
+
+  if (!res.ok) throw new Error(await res.text());
+  return res.status === 204 ? null : res.json();
+}
