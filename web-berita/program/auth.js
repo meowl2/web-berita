@@ -1,5 +1,5 @@
 import { initNav } from "./nav.js";
-initNav();
+await initNav();
 
 import { signIn, signUp } from "./supabase.js";
 

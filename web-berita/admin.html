@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BitMedia — Admin</title>
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/dashboard.css" />
+    <link rel="stylesheet" href="style/admin.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="logo">BitMedia</div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+      </ul>
+    </nav>
+
+    <main class="dashboard_container">
+      <div class="dashboard_header">
+        <h1>Admin Panel</h1>
+      </div>
+
+      <div class="admin_tabs">
+        <button class="admin_tab active" data-status="pending">Pending</button>
+        <button class="admin_tab" data-status="published">Published</button>
+        <button class="admin_tab" data-status="rejected">Rejected</button>
+      </div>
+
+      <div class="dashboard_stats" id="admin_stats"></div>
+      <div class="dashboard_list" id="admin_list"></div>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 BitMedia</p>
+    </footer>
+
+    <script type="module" src="program/admin.js"></script>
+  </body>
+</html>

@@ -132,3 +132,18 @@ export async function signOut() {
 export async function getNewsByUser(userId) {
   return dbFetch(`news?user_id=eq.${userId}&select=*&order=created_at.desc`);
 }
+
+export async function getAllNewsByStatus(status) {
+  return dbFetch(`news?status=eq.${status}&select=*&order=created_at.desc`);
+}
+
+export async function updateNewsStatus(id, status) {
+  return dbFetch(`news?id=eq.${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });
+}
+
+export async function getAllNewsAdmin() {
+  return dbFetch(`news?select=*&order=created_at.desc`);
+}

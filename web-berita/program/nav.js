@@ -1,21 +1,21 @@
-import { getUser, signOut } from "./supabase.js";
+import { getUser, signOut, getUserProfile } from "./supabase.js";
 
-export function initNav() {
+export async function initNav() {
   const user = getUser();
   const navList = document.querySelector("nav ul");
 
-  // Remove old signin link if present
   const signinLink = navList.querySelector('a[href="#signin"]');
   if (signinLink) signinLink.closest("li").remove();
 
   if (user) {
-    // Get profile for username
+    const profile = await getUserProfile(user.id);
     const username = user.user_metadata?.username ?? user.email;
 
     navList.insertAdjacentHTML(
       "beforeend",
       `
-      <li><a href="dashboard.html" id="nav_dashboard">📝 ${username}</a></li>
+      <li><a href="dashboard.html">📝 ${username}</a></li>
+      ${profile?.role === "admin" ? `<li><a href="admin.html">⚙️ Admin</a></li>` : ""}
       <li><button id="nav_logout" class="nav_logout_btn">Logout</button></li>
     `,
     );
@@ -29,4 +29,9 @@ export function initNav() {
     `,
     );
   }
+}
+
+export async function getUserProfile(userId) {
+  const rows = await dbFetch(`profiles?id=eq.${userId}&select=*`);
+  return rows?.[0] ?? null;
 }
