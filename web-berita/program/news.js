@@ -6,7 +6,10 @@ import {
   insertNews,
   deleteNewsById,
   uploadImage,
+  getUser,
 } from "./supabase.js";
+
+const user = getUser();
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const ITEMS_PER_PAGE = 4;
