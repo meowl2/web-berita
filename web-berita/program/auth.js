@@ -5,8 +5,6 @@ import { signIn, signUp } from "./supabase.js";
 
 import { getUser } from "./supabase.js";
 
-initNav();
-
 // Redirect if already logged in
 if (getUser()) window.location.href = "index.html";
 
