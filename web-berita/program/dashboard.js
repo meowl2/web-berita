@@ -158,8 +158,7 @@ form.addEventListener("submit", async (e) => {
       author,
       user_id: user.id,
     });
-    // sementarasx
-    currentPage = 1;
+    currentPage = 0;
     await renderSect3();
     closeModal();
   } catch (err) {
