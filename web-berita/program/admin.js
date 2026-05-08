@@ -6,7 +6,7 @@ import {
 } from "./supabase.js";
 import { initNav } from "./nav.js";
 
-initNav();
+await initNav();
 
 // Redirect if not admin
 const user = getUser();

@@ -7,7 +7,7 @@ import {
 } from "./supabase.js";
 import { initNav } from "./nav.js";
 
-initNav();
+await initNav();
 
 const user = getUser();
 if (!user) window.location.href = "login.html";
