@@ -108,10 +108,10 @@ const form = document.getElementById("upload_form");
 const imageInput = document.getElementById("news_image");
 const imagePreview = document.getElementById("image_preview");
 
-openBtn.addEventListener("click", () => {
-  modal.classList.add("active");
-  document.body.style.overflow = "hidden";
-});
+// openBtn.addEventListener("click", () => {
+//   modal.classList.add("active");
+//   document.body.style.overflow = "hidden";
+// });
 
 function closeModal() {
   modal.classList.remove("active");
