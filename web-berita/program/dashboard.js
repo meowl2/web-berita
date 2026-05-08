@@ -1,9 +1,10 @@
 import {
-  getUser,
-  signOut,
-  uploadImage,
+  getAllNews,
   insertNews,
-  getNewsByUser,
+  deleteNewsById,
+  uploadImage,
+  getUser,
+  getUserProfile,
 } from "./supabase.js";
 import { initNav } from "./nav.js";
 
@@ -134,10 +135,9 @@ form.addEventListener("submit", async (e) => {
   const title = document.getElementById("news_title").value.trim();
   const desc = document.getElementById("news_desc").value.trim();
   const content = document.getElementById("news_content").value.trim();
-  const author = document.getElementById("news_author").value.trim();
   const file = imageInput.files[0];
 
-  if (!title || !desc || !content || !author || !file)
+  if (!title || !desc || !content || !file)
     return alert("Mohon lengkapi semua field.");
 
   const submitBtn = form.querySelector(".btn_primary");
@@ -145,6 +145,9 @@ form.addEventListener("submit", async (e) => {
   submitBtn.textContent = "Menyimpan...";
 
   try {
+    const profile = await getUserProfile(user.id).catch(() => null);
+    const author = profile?.username ?? user.email;
+
     const image_url = await uploadImage(file);
     await insertNews({
       title,
@@ -155,7 +158,8 @@ form.addEventListener("submit", async (e) => {
       author,
       user_id: user.id,
     });
-    await loadDashboard();
+    currentPage = 0;
+    await renderSect3();
     closeModal();
   } catch (err) {
     alert("Gagal menyimpan: " + err.message);

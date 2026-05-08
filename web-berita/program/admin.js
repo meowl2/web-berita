@@ -3,6 +3,7 @@ import {
   getAllNewsAdmin,
   updateNewsStatus,
   deleteNewsById,
+  getUserProfile,
 } from "./supabase.js";
 import { initNav } from "./nav.js";
 
@@ -11,6 +12,9 @@ await initNav();
 // Redirect if not admin
 const user = getUser();
 if (!user) window.location.href = "login.html";
+
+const profile = await getUserProfile(user.id).catch(() => null);
+if (profile?.role !== "admin") window.location.href = "index.html";
 
 let currentStatus = "pending";
 let allNews = [];

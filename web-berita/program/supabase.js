@@ -131,8 +131,8 @@ export async function signOut() {
       apikey: SUPABASE_KEY,
       Authorization: `Bearer ${session?.access_token}`,
     },
-  });
-  localStorage.removeItem("sb_session");
+  }).catch(() => null);
+  localStorage.clear();
   window.location.href = "index.html";
 }
 
