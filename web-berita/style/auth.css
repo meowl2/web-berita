@@ -39,7 +39,7 @@
 }
 
 .form_group input {
-  padding-top: 2rem;
+  padding: 0.25;
 }
 
 .auth_submit {
