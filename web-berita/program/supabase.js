@@ -95,8 +95,9 @@ export function getSession() {
   }
 }
 
-export function getUser() {
-  return getSession()?.user ?? null;
+export async function getUserProfile(userId) {
+  const rows = await dbFetch(`profiles?id=eq.${userId}&select=*`);
+  return rows?.[0] ?? null;
 }
 
 export async function signOut() {

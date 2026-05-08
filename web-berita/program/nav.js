@@ -1,9 +1,5 @@
 import { getUser, signOut, getUserProfile } from "./supabase.js";
 
-export async function getUserProfile(userId) {
-  const rows = await dbFetch(`profiles?id=eq.${userId}&select=*`);
-  return rows?.[0] ?? null;
-}
 export async function initNav() {
   const user = getUser();
   const navList = document.querySelector("nav ul");
