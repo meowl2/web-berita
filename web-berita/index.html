@@ -3,12 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BitMedia</title>
+    <title>ArusTeknologi</title>
     <link rel="stylesheet" href="style/style.css" />
-    <link rel="stylesheet" href="style/news-detail.css">
+    <link rel="stylesheet" href="style/news-detail.css" />
   </head>
   
     <nav>
+      <img class="logo" src="assets/main/logo_2.png" alt="" />
+      <button class="nav_hamburger" id="nav_hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul id="nav_menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <!-- <nav>
       <img class="logo" src="assets/main/logo_2.png" alt="">
 
       <div class="search-container">
@@ -22,15 +34,12 @@
 
       <ul>
         <li><a href="#home">Home</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="#signin">Sign In</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
-    </nav>
+    </nav> -->
 
     <header id="home" class="hero">
-      <img src="assets/main/logo_1.png" alt="">
-      <button id="open_upload_modal" class="upload_btn">+ Upload</button>
+      <img src="assets/main/logo_1.png" alt="" />
     </header>
 
     <main class="container">
@@ -40,19 +49,13 @@
       <!-- Section 2 -->
       <div class="berita_sect_2">
         <h2>BERITA MINGGU LALU</h2>
-        <div class="berita_sect_2_main">
-          <div class="berita_sect_2_1">
-          </div>
-
-          <div class="berita_sect_2_2">
-          </div>
-        </div>
+        <div class="berita_sect_2_main" id="sect2_dynamic"></div>
       </div>
 
       <!-- Section 3 — Viral (dynamic) -->
       <div class="berita_sect_3">
         <div class="sect3_header">
-          <h2>Berita</h2>
+          <h2>PILIHAN EDITOR</h2>
           <div class="sect3_nav">
             <span id="sect3_indicator">1 / 1</span>
             <button id="prev_sect3">&#8592;</button>
@@ -69,7 +72,9 @@
       <div class="services">
         <section id="layanan">
           <h2>Layanan Kami</h2>
-          <p>Penjelasan singkat mengenai apa yang ditawarkan oleh BitMedia.</p>
+          <p>
+            Penjelasan singkat mengenai apa yang ditawarkan oleh ArusTeknologi.
+          </p>
         </section>
 
         <hr />
@@ -82,15 +87,23 @@
     </main>
 
     <footer>
-      <p>&copy; 2026 BitMedia</p>
+      <p>&copy; 2026 ArusTeknologi</p>
     </footer>
 
     <!-- Upload Modal -->
-    <div id="upload_modal" class="modal_overlay" role="dialog" aria-modal="true" aria-labelledby="modal_title">
+    <div
+      id="upload_modal"
+      class="modal_overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal_title"
+    >
       <div class="modal_box">
         <div class="modal_header">
           <h2 id="modal_title">Unggah Berita</h2>
-          <button id="close_modal" class="modal_close" aria-label="Tutup modal">&#x2715;</button>
+          <button id="close_modal" class="modal_close" aria-label="Tutup modal">
+            &#x2715;
+          </button>
         </div>
 
         <form id="upload_form" novalidate>
@@ -105,6 +118,11 @@
             />
           </div>
 
+          <!-- <div class="form_group">
+            <label for="news_author">Penulis</label>
+            <input type="text" id="news_author" placeholder="Nama penulis..." maxlength="50" required />
+          </div> -->
+
           <div class="form_group">
             <label for="news_desc">Deskripsi Singkat</label>
             <textarea
@@ -118,6 +136,10 @@
 
           <div class="form_group">
             <label for="news_content">Isi Berita</label>
+            <div class="editor_toolbar">
+              <button type="button" id="btn_bold"><strong>B</strong></button>
+              <button type="button" id="btn_italic"><em>I</em></button>
+            </div>
             <textarea
               id="news_content"
               placeholder="Tulis isi lengkap berita di sini..."
@@ -130,18 +152,15 @@
             <label for="news_image">Gambar (maks. 5MB)</label>
             <label class="file_upload_label" for="news_image">
               <span>&#128247; Pilih Gambar</span>
-              <input
-                type="file"
-                id="news_image"
-                accept="image/*"
-                required
-              />
+              <input type="file" id="news_image" accept="image/*" required />
             </label>
             <img id="image_preview" class="hidden" alt="Preview gambar" />
           </div>
 
           <div class="form_actions">
-            <button type="button" id="close_modal_2" class="btn_secondary">Batal</button>
+            <button type="button" id="close_modal_2" class="btn_secondary">
+              Batal
+            </button>
             <button type="submit" class="btn_primary">Publikasikan</button>
           </div>
         </form>
@@ -151,6 +170,5 @@
     <script src="https://unpkg.com/scrollreveal"></script>
     <script type="module" src="program/main.js"></script>
     <script type="module" src="program/news.js"></script>
-    <script type="module" src="program/news-detail.js"></script>
   </body>
 </html>

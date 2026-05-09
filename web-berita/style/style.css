@@ -313,9 +313,9 @@ nav ul li a:hover {
 
 /* Upload button — distinct from nav buttons */
 .upload_btn {
-  background: var(--cta) !important;
-  border-color: var(--cta) !important;
-  color: var(--text-on-dark) !important;
+  background: var(--cta);
+  border-color: var(--cta);
+  color: var(--text-on-dark);
   font-weight: 600;
   font-size: 1rem;
   box-shadow: none;
@@ -327,9 +327,9 @@ nav ul li a:hover {
 }
 
 .upload_btn:hover {
-  background: var(--background) !important;
-  border-color: var(--background) !important;
-  color: var(--cta) !important;
+  background: var(--background);
+  border-color: var(--background);
+  color: var(--cta);
 }
 
 /* Sect 3 grid */
@@ -553,7 +553,7 @@ nav ul li a:hover {
 }
 
 .hidden {
-  display: none !important;
+  display: none;
 }
 
 /* Modal actions */
