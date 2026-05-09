@@ -1,11 +1,8 @@
 import { initNav } from "./nav.js";
+import { signIn, signUp, getUser } from "./supabase.js";
+
 await initNav();
 
-import { signIn, signUp } from "./supabase.js";
-
-import { getUser } from "./supabase.js";
-
-// Redirect if already logged in
 if (getUser()) window.location.href = "index.html";
 
 const tabLogin = document.getElementById("tab_login");
@@ -44,9 +41,11 @@ loginForm.addEventListener("submit", async (e) => {
     await signIn(email, password);
     window.location.href = "index.html";
   } catch (err) {
-    const error = document.getElementById("login_error");
     error.textContent = "Email atau password salah.";
     error.classList.remove("hidden");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Masuk";
   }
 });
 
