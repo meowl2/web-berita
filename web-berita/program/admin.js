@@ -121,6 +121,7 @@ const editImagePreview = document.getElementById("edit_image_preview");
 function openEditModal(item) {
   document.getElementById("edit_news_id").value = item.id;
   document.getElementById("edit_title").value = item.title;
+  document.getElementById("edit_author").value = item.author;   
   document.getElementById("edit_desc").value = item.description;
   document.getElementById("edit_content").value = item.content;
   editImagePreview.src = item.image_url;
@@ -182,6 +183,7 @@ editForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const id = Number(document.getElementById("edit_news_id").value);
   const title = document.getElementById("edit_title").value.trim();
+  const author = document.getElementById("edit_author").value.trim();
   const description = document.getElementById("edit_desc").value.trim();
   const content = document.getElementById("edit_content").value.trim();
   const file = editImageInput.files[0];
@@ -195,7 +197,7 @@ editForm.addEventListener("submit", async (e) => {
 
   try {
     // Admin edits keep existing status
-    let fields = { title, description, content };
+    let fields = { title, description, content, author };
     if (file) fields.image_url = await uploadImage(file);
 
     await updateNews(id, fields);
