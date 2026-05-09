@@ -33,7 +33,6 @@ document
     await emailjs.send(SERVICE_ID, AUTOREPLY_TEMPLATE_ID, params); // to visitor
     success.classList.remove("hidden");
     this.reset();
-    }
     } catch (err) {
       error.classList.remove("hidden");
       console.error(err);
