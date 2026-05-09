@@ -5,6 +5,7 @@ import {
   uploadImage,
   getUser,
   getUserProfile,
+  getNewsByUser,
 } from "./supabase.js";
 import { initNav } from "./nav.js";
 
