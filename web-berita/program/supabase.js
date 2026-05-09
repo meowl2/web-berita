@@ -102,6 +102,7 @@ export async function signIn(email, password) {
   });
   const data = await res.json();
   if (data.error) throw new Error(data.error.message);
+  if (!res.ok) throw new Error("Email atau password salah.");
   localStorage.setItem("sb_session", JSON.stringify(data));
   return data;
 }
