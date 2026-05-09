@@ -44,11 +44,9 @@ loginForm.addEventListener("submit", async (e) => {
     await signIn(email, password);
     window.location.href = "index.html";
   } catch (err) {
-    error.textContent = err.message;
+    const error = document.getElementById("login_error");
+    error.textContent = "Email atau password salah.";
     error.classList.remove("hidden");
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Masuk";
   }
 });
 
