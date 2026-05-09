@@ -4,6 +4,7 @@ await initNav();
 const SERVICE_ID = "service_su6ltzs";
 const TEMPLATE_ID = "template_8v7780t";
 const PUBLIC_KEY = "ZlYeZn3bzeol2W88P";
+const AUTOREPLY_TEMPLATE_ID = "template_r17tc4p";
 
 emailjs.init(PUBLIC_KEY);
 
@@ -28,9 +29,11 @@ document
     };
 
     try {
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
-      success.classList.remove("hidden");
-      this.reset();
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID, params);        // to you
+    await emailjs.send(SERVICE_ID, AUTOREPLY_TEMPLATE_ID, params); // to visitor
+    success.classList.remove("hidden");
+    this.reset();
+    }
     } catch (err) {
       error.classList.remove("hidden");
       console.error(err);
