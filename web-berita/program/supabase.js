@@ -179,6 +179,12 @@ export async function getAllNewsAdmin() {
   return dbFetch(`news?select=*&order=created_at.desc`);
 }
 
+export async function searchNews(query) {
+  return dbFetch(
+    `news?status=eq.published&or=(title.ilike.*${query}*,description.ilike.*${query}*)&select=*&order=created_at.desc`,
+  );
+}
+
 export async function refreshSession() {
   const session = getSession();
   if (!session?.refresh_token) return null;

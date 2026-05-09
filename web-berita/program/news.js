@@ -161,6 +161,20 @@ document.getElementById("btn_italic").addEventListener("click", () => {
     ta.value.substring(0, start) + `*${selected}*` + ta.value.substring(end);
 });
 
+document.getElementById("search_btn").addEventListener("click", () => {
+  const query = document.getElementById("search_input").value.trim();
+  if (query)
+    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+});
+
+document.getElementById("search_input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const query = e.target.value.trim();
+    if (query)
+      window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+  }
+});
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const title = document.getElementById("news_title").value.trim();
