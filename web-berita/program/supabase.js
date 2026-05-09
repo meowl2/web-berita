@@ -168,6 +168,13 @@ export async function updateNewsStatus(id, status) {
   });
 }
 
+export async function updateNews(id, fields) {
+  return dbFetch(`news?id=eq.${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(fields),
+  });
+}
+
 export async function getAllNewsAdmin() {
   return dbFetch(`news?select=*&order=created_at.desc`);
 }

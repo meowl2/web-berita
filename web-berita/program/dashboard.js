@@ -6,6 +6,7 @@ import {
   getUser,
   getUserProfile,
   getNewsByUser,
+  updateNews,
 } from "./supabase.js";
 import { initNav } from "./nav.js";
 
@@ -45,20 +46,27 @@ function renderList(news) {
     return;
   }
 
-  list.innerHTML = news
-    .map(
-      (item) => `
+  list.innerHTML = news.map((item) => `
     <div class="dashboard_item">
       <img src="${item.image_url}" alt="${item.title}" />
       <div>
         <p class="dashboard_item_title">${item.title}</p>
         <p class="dashboard_item_meta">${item.author} · ${new Date(item.created_at).toLocaleDateString("id-ID")}</p>
       </div>
-      <span class="status_badge status_${item.status}">${item.status}</span>
+      <div style="display:flex; flex-direction:column; gap:0.5rem; align-items:flex-end;">
+        <span class="status_badge status_${item.status}">${item.status}</span>
+        ${item.status !== "published" ? `<button class="btn_edit" data-id="${item.id}">Edit</button>` : ""}
+      </div>
     </div>
-  `,
-    )
-    .join("");
+  `,).join("");
+
+  // Bind edit buttons
+  list.querySelectorAll(".btn_edit").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const item = news.find((n) => n.id === Number(btn.dataset.id));
+      if (item) openEditModal(item);
+    });
+  });
 }
 
 // ── Load dashboard ────────────────────────────────────────────────────────────
@@ -167,5 +175,104 @@ form.addEventListener("submit", async (e) => {
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = "Publikasikan";
+  }
+});
+
+// ── Edit modal ────────────────────────────────────────────────────────────────
+const editModal = document.getElementById("edit_modal");
+const editForm = document.getElementById("edit_form");
+const editImageInput = document.getElementById("edit_image");
+const editImagePreview = document.getElementById("edit_image_preview");
+
+function openEditModal(item) {
+  document.getElementById("edit_news_id").value = item.id;
+  document.getElementById("edit_title").value = item.title;
+  document.getElementById("edit_desc").value = item.description;
+  document.getElementById("edit_content").value = item.content;
+  editImagePreview.src = item.image_url;
+  editImagePreview.classList.remove("hidden");
+  editModal.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeEditModal() {
+  editModal.classList.remove("active");
+  document.body.style.overflow = "";
+  editForm.reset();
+  editImagePreview.src = "";
+  editImagePreview.classList.add("hidden");
+}
+
+document
+  .getElementById("close_edit_modal")
+  .addEventListener("click", closeEditModal);
+document
+  .getElementById("close_edit_modal_2")
+  .addEventListener("click", closeEditModal);
+editModal.addEventListener("click", (e) => {
+  if (e.target === editModal) closeEditModal();
+});
+
+editImageInput.addEventListener("change", () => {
+  const file = editImageInput.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    editImagePreview.src = e.target.result;
+    editImagePreview.classList.remove("hidden");
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById("edit_btn_bold").addEventListener("click", () => {
+  const ta = document.getElementById("edit_content");
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  ta.value =
+    ta.value.substring(0, start) +
+    `**${ta.value.substring(start, end)}**` +
+    ta.value.substring(end);
+});
+
+document.getElementById("edit_btn_italic").addEventListener("click", () => {
+  const ta = document.getElementById("edit_content");
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  ta.value =
+    ta.value.substring(0, start) +
+    `*${ta.value.substring(start, end)}*` +
+    ta.value.substring(end);
+});
+
+editForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const id = Number(document.getElementById("edit_news_id").value);
+  const title = document.getElementById("edit_title").value.trim();
+  const description = document.getElementById("edit_desc").value.trim();
+  const content = document.getElementById("edit_content").value.trim();
+  const file = editImageInput.files[0];
+
+  if (!title || !description || !content)
+    return alert("Mohon lengkapi semua field.");
+
+  const submitBtn = editForm.querySelector(".btn_primary");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Menyimpan...";
+
+  try {
+    let fields = { title, description, content, status: "pending" };
+
+    if (file) {
+      fields.image_url = await uploadImage(file);
+    }
+
+    await updateNews(id, fields);
+    await loadDashboard();
+    closeEditModal();
+  } catch (err) {
+    alert("Gagal menyimpan: " + err.message);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Simpan";
   }
 });
