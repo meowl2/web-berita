@@ -1,9 +1,9 @@
 import { initNav } from "./nav.js";
 await initNav();
 
-const SERVICE_ID = "your_service_id";
-const TEMPLATE_ID = "your_template_id";
-const PUBLIC_KEY = "your_public_key";
+const SERVICE_ID = "service_su6ltzs";
+const TEMPLATE_ID = "template_8v7780t";
+const PUBLIC_KEY = "ZlYeZn3bzeol2W88P";
 
 emailjs.init(PUBLIC_KEY);
 
