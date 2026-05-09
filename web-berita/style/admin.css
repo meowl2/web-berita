@@ -1,4 +1,4 @@
-    .admin_tabs {
+.admin_tabs {
   display: flex;
   gap: 0;
   margin-bottom: 2rem;
@@ -15,7 +15,9 @@
   color: var(--muted-tone);
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
 }
 
 .admin_tab.active {
@@ -99,4 +101,19 @@
 
 .btn_delete:hover {
   background: var(--muted-tone);
+}
+
+.btn_edit {
+  background: #2d6a4f;
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn_delete:hover {
+  background: #1e4d38;
 }
